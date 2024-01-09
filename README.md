@@ -1,6 +1,6 @@
 ---
 title: H94 IP Adapter FaceID
-emoji: 👀
+emoji: 💖
 colorFrom: green
 colorTo: blue
 sdk: gradio
