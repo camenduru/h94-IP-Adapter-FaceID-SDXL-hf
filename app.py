@@ -3,7 +3,7 @@ import spaces
 from diffusers import StableDiffusionPipeline, DDIMScheduler, AutoencoderKL, StableDiffusionXLPipeline
 from transformers import AutoFeatureExtractor
 from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
-from ip_adapter.ip_adapter_faceid import IPAdapterFaceID, IPAdapterFaceIDPlus, IPAdapterFaceIDXL
+from ip_adapter.ip_adapter_faceid import IPAdapterFaceIDXL
 from huggingface_hub import hf_hub_download
 from insightface.app import FaceAnalysis
 from insightface.utils import face_align
@@ -11,7 +11,6 @@ import gradio as gr
 import cv2
 
 base_model_path = "SG161222/RealVisXL_V3.0"
-image_encoder_path = "laion/CLIP-ViT-H-14-laion2B-s32B-b79K"
 ip_ckpt = "ip-adapter-faceid_sdxl.bin"
 device = "cuda"
 
