@@ -89,19 +89,18 @@ with gr.Blocks(css=css) as demo:
             prompt = gr.Textbox(label="Prompt",
                        info="Try something like 'a photo of a man/woman/person'",
                        placeholder="A photo of a [man/woman/person]...")
-            negative_prompt = gr.Textbox(label="Negative Prompt", placeholder="low quality")
+            negative_prompt = gr.Textbox(label="Negative Prompt", placeholder="low quality", value="low quality, worst quality")
             style = "Photorealistic"
             submit = gr.Button("Submit")
             with gr.Accordion(open=True, label="Advanced Options"):
                 face_strength = gr.Slider(label="Face Structure strength", info="Only applied if preserve face structure is checked", value=1.3, step=0.1, minimum=0, maximum=3)
                 likeness_strength = gr.Slider(label="Face Embed strength", value=1.0, step=0.1, minimum=0, maximum=5)
-                nfaa_negative_prompts = gr.Textbox(label="Appended Negative Prompts", info="Negative prompts to steer generations towards safe for all audiences outputs", value="low quality, worst quality")    
         with gr.Column():
             gallery = gr.Gallery(label="Generated Images")
         files.upload(fn=swap_to_gallery, inputs=files, outputs=[uploaded_files, clear_button, files])
         remove_and_reupload.click(fn=remove_back_to_files, outputs=[uploaded_files, clear_button, files])
         submit.click(fn=generate_image,
-                    inputs=[files,prompt,negative_prompt, face_strength, likeness_strength, nfaa_negative_prompts],
+                    inputs=[files,prompt,negative_prompt, face_strength, likeness_strength],
                     outputs=gallery)
     
     # gr.Markdown("This demo includes extra features to mitigate the implicit bias of the model and prevent explicit usage of it to generate content with faces of people, including third parties, that is not safe for all audiences, including naked or semi-naked people.")
