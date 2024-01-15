@@ -40,7 +40,7 @@ pipe = StableDiffusionXLPipeline.from_pretrained(
 ip_model = ipown.IPAdapterFaceIDXL(pipe, ip_ckpt, device)
 
 @spaces.GPU(enable_queue=True)
-def generate_image(images, prompt, negative_prompt, preserve_face_structure, face_strength, likeness_strength, progress=gr.Progress(track_tqdm=True)):
+def generate_image(images, prompt, negative_prompt, face_strength, likeness_strength, progress=gr.Progress(track_tqdm=True)):
     pipe.to(device)
     app = FaceAnalysis(name="buffalo_l", providers=['CUDAExecutionProvider', 'CPUExecutionProvider'])
     app.prepare(ctx_id=0, det_size=(640, 640))
@@ -93,7 +93,6 @@ with gr.Blocks(css=css) as demo:
             style = "Photorealistic"
             submit = gr.Button("Submit")
             with gr.Accordion(open=True, label="Advanced Options"):
-                preserve = False
                 face_strength = gr.Slider(label="Face Structure strength", info="Only applied if preserve face structure is checked", value=1.3, step=0.1, minimum=0, maximum=3)
                 likeness_strength = gr.Slider(label="Face Embed strength", value=1.0, step=0.1, minimum=0, maximum=5)
                 nfaa_negative_prompts = gr.Textbox(label="Appended Negative Prompts", info="Negative prompts to steer generations towards safe for all audiences outputs", value="low quality, worst quality")    
@@ -102,7 +101,7 @@ with gr.Blocks(css=css) as demo:
         files.upload(fn=swap_to_gallery, inputs=files, outputs=[uploaded_files, clear_button, files])
         remove_and_reupload.click(fn=remove_back_to_files, outputs=[uploaded_files, clear_button, files])
         submit.click(fn=generate_image,
-                    inputs=[files,prompt,negative_prompt,preserve, face_strength, likeness_strength, nfaa_negative_prompts],
+                    inputs=[files,prompt,negative_prompt, face_strength, likeness_strength, nfaa_negative_prompts],
                     outputs=gallery)
     
     # gr.Markdown("This demo includes extra features to mitigate the implicit bias of the model and prevent explicit usage of it to generate content with faces of people, including third parties, that is not safe for all audiences, including naked or semi-naked people.")
