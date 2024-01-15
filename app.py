@@ -1,9 +1,9 @@
 import torch
 import spaces
-from diffusers import StableDiffusionPipeline, DDIMScheduler, AutoencoderKL
+from diffusers import StableDiffusionPipeline, DDIMScheduler, AutoencoderKL, StableDiffusionXLPipeline
 from transformers import AutoFeatureExtractor
 from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
-from ip_adapter.ip_adapter_faceid import IPAdapterFaceID, IPAdapterFaceIDPlus
+from ip_adapter.ip_adapter_faceid import IPAdapterFaceID, IPAdapterFaceIDPlus, IPAdapterFaceIDXL
 from huggingface_hub import hf_hub_download
 from insightface.app import FaceAnalysis
 from insightface.utils import face_align
@@ -11,15 +11,8 @@ import gradio as gr
 import cv2
 
 base_model_path = "SG161222/RealVisXL_V3.0"
-# vae_model_path = "stabilityai/sd-vae-ft-mse"
 image_encoder_path = "laion/CLIP-ViT-H-14-laion2B-s32B-b79K"
-ip_ckpt = hf_hub_download(repo_id="h94/ip-adapter-faceid_sdxl.bin", filename="ip-adapter-faceid_sd15.bin", repo_type="model")
-ip_plus_ckpt = hf_hub_download(repo_id="h94/ip-adapter-faceid_sdxl.bin", filename="ip-adapter-faceid-plusv2_sd15.bin", repo_type="model")
-
-#safety_model_id = "CompVis/stable-diffusion-safety-checker"
-#safety_feature_extractor = AutoFeatureExtractor.from_pretrained(safety_model_id)
-#safety_checker = StableDiffusionSafetyChecker.from_pretrained(safety_model_id)
-
+ip_ckpt = "ip-adapter-faceid_sdxl.bin"
 device = "cuda"
 
 noise_scheduler = DDIMScheduler(
@@ -32,10 +25,11 @@ noise_scheduler = DDIMScheduler(
     steps_offset=1,
 )
 # vae = AutoencoderKL.from_pretrained(vae_model_path).to(dtype=torch.float16)
-pipe = StableDiffusionPipeline.from_pretrained(
+pipe = StableDiffusionXLPipeline.from_pretrained(
     base_model_path,
     torch_dtype=torch.float16,
     scheduler=noise_scheduler,
+    add_watermarker=False
     # vae=vae,
     #feature_extractor=safety_feature_extractor,
     #safety_checker=safety_checker
@@ -44,8 +38,7 @@ pipe = StableDiffusionPipeline.from_pretrained(
 #pipe.load_lora_weights("h94/IP-Adapter-FaceID", weight_name="ip-adapter-faceid-plusv2_sd15_lora.safetensors")
 #pipe.fuse_lora()
 
-ip_model = IPAdapterFaceID(pipe, ip_ckpt, device)
-ip_model_plus = IPAdapterFaceIDPlus(pipe, image_encoder_path, ip_plus_ckpt, device)
+ip_model = IPAdapterFaceIDXL(pipe, ip_ckpt, device)
 
 @spaces.GPU(enable_queue=True)
 def generate_image(images, prompt, negative_prompt, preserve_face_structure, face_strength, likeness_strength, nfaa_negative_prompt, progress=gr.Progress(track_tqdm=True)):
@@ -74,12 +67,7 @@ def generate_image(images, prompt, negative_prompt, preserve_face_structure, fac
             prompt=prompt, negative_prompt=total_negative_prompt, faceid_embeds=average_embedding,
             scale=likeness_strength, width=512, height=512, num_inference_steps=30
         )
-    else:
-        print("Generating plus")
-        image = ip_model_plus.generate(
-            prompt=prompt, negative_prompt=total_negative_prompt, faceid_embeds=average_embedding,
-            scale=likeness_strength, face_image=face_image, shortcut=True, s_scale=face_strength, width=512, height=512, num_inference_steps=30
-        )
+
     print(image)
     return image
 
@@ -98,8 +86,8 @@ css = '''
 h1{margin-bottom: 0 !important}
 '''
 with gr.Blocks(css=css) as demo:
-    gr.Markdown("# IP-Adapter-FaceID Plus demo")
-    gr.Markdown("Demo for the [h94/IP-Adapter-FaceID model](https://huggingface.co/h94/IP-Adapter-FaceID) - Non-commercial license")
+    gr.Markdown("# IP-Adapter-FaceID SDXL demo")
+    gr.Markdown("Demo for the [h94/IP-Adapter-FaceID SDXL model](https://huggingface.co/h94/IP-Adapter-FaceID) - Non-commercial license")
     with gr.Row():
         with gr.Column():
             files = gr.Files(
