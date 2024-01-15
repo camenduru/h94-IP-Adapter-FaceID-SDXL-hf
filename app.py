@@ -3,7 +3,7 @@ import spaces
 from diffusers import StableDiffusionPipeline, DDIMScheduler, AutoencoderKL, StableDiffusionXLPipeline
 from transformers import AutoFeatureExtractor
 from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
-from ip_adapter.ip_adapter_faceid import IPAdapterFaceIDXL
+import ipown
 from huggingface_hub import hf_hub_download
 from insightface.app import FaceAnalysis
 from insightface.utils import face_align
@@ -60,12 +60,11 @@ def generate_image(images, prompt, negative_prompt, preserve_face_structure, fac
     
     total_negative_prompt = f"{negative_prompt} {nfaa_negative_prompt}"
     
-    if(not preserve_face_structure):
-        print("Generating normal")
-        image = ip_model.generate(
-            prompt=prompt, negative_prompt=total_negative_prompt, faceid_embeds=average_embedding,
-            scale=likeness_strength, width=512, height=512, num_inference_steps=30
-        )
+    print("Generating normal")
+    image = ip_model.generate(
+        prompt=prompt, negative_prompt=total_negative_prompt, faceid_embeds=average_embedding,
+        scale=likeness_strength, width=1024, height=1024, guidance_scale=7.5, num_inference_steps=30
+    )
 
     print(image)
     return image
