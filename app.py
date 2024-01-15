@@ -37,7 +37,7 @@ pipe = StableDiffusionXLPipeline.from_pretrained(
 #pipe.load_lora_weights("h94/IP-Adapter-FaceID", weight_name="ip-adapter-faceid-plusv2_sd15_lora.safetensors")
 #pipe.fuse_lora()
 
-ip_model = IPAdapterFaceIDXL(pipe, ip_ckpt, device)
+ip_model = ipown.IPAdapterFaceIDXL(pipe, ip_ckpt, device)
 
 @spaces.GPU(enable_queue=True)
 def generate_image(images, prompt, negative_prompt, preserve_face_structure, face_strength, likeness_strength, nfaa_negative_prompt, progress=gr.Progress(track_tqdm=True)):
