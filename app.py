@@ -53,7 +53,7 @@ def generate_image(images, prompt, negative_prompt, preserve_face_structure, fac
         faceid_embed = torch.from_numpy(faces[0].normed_embedding).unsqueeze(0)
         faceid_all_embeds.append(faceid_embed)
         if(first_iteration and preserve_face_structure):
-            face_image = face_align.norm_crop(face, landmark=faces[0].kps, image_size=224) # you can also segment the face
+            face_image = face_align.norm_crop(face, landmark=faces[0].kps, image_size=640) # you can also segment the face
             first_iteration = False
             
     average_embedding = torch.mean(torch.stack(faceid_all_embeds, dim=0), dim=0)
