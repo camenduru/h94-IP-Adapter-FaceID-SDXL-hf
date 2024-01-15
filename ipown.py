@@ -13,14 +13,14 @@ from utils import is_torch2_available
 
 USE_DAFAULT_ATTN = False # should be True for visualization_attnmap
 if is_torch2_available() and (not USE_DAFAULT_ATTN):
-    from .attention_processor_faceid import (
+    from attention_processor_faceid import (
         LoRAAttnProcessor2_0 as LoRAAttnProcessor,
     )
-    from .attention_processor_faceid import (
+    from attention_processor_faceid import (
         LoRAIPAttnProcessor2_0 as LoRAIPAttnProcessor,
     )
 else:
-    from .attention_processor_faceid import LoRAAttnProcessor, LoRAIPAttnProcessor
+    from attention_processor_faceid import LoRAAttnProcessor, LoRAIPAttnProcessor
 from resampler import PerceiverAttention, FeedForward
 
 
