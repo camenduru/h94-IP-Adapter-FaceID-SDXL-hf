@@ -8,8 +8,8 @@ from PIL import Image
 from safetensors import safe_open
 from transformers import CLIPImageProcessor, CLIPVisionModelWithProjection
 
-from .attention_processor_faceid import LoRAAttnProcessor, LoRAIPAttnProcessor
-from .utils import is_torch2_available
+from attention_processor_faceid import LoRAAttnProcessor, LoRAIPAttnProcessor
+from utils import is_torch2_available
 
 USE_DAFAULT_ATTN = False # should be True for visualization_attnmap
 if is_torch2_available() and (not USE_DAFAULT_ATTN):
@@ -21,7 +21,7 @@ if is_torch2_available() and (not USE_DAFAULT_ATTN):
     )
 else:
     from .attention_processor_faceid import LoRAAttnProcessor, LoRAIPAttnProcessor
-from .resampler import PerceiverAttention, FeedForward
+from resampler import PerceiverAttention, FeedForward
 
 
 class FacePerceiverResampler(torch.nn.Module):
