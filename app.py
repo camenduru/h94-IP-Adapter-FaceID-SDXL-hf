@@ -48,7 +48,7 @@ def generate_image(images, prompt, negative_prompt, face_strength, likeness_stre
     # Start the process
     pipe.to(device)
     app = FaceAnalysis(name="buffalo_l", providers=['CUDAExecutionProvider', 'CPUExecutionProvider'])
-    app.prepare(ctx_id=0, det_size=(640, 640))
+    app.prepare(ctx_id=0, det_size=(512, 512))
     
     faceid_all_embeds = []
     for image in images:
@@ -66,6 +66,9 @@ def generate_image(images, prompt, negative_prompt, face_strength, likeness_stre
         prompt=prompt, negative_prompt=total_negative_prompt, faceid_embeds=average_embedding,
         scale=likeness_strength, width=1024, height=1024, guidance_scale=face_strength, num_inference_steps=30
     )
+
+    # Clear GPU memory
+    torch.cuda.empty_cache()
 
     print(image)
     return image
@@ -93,7 +96,7 @@ with gr.Blocks(css=css) as demo:
             prompt = gr.Textbox(label="Prompt",
                         info="Try something like 'a photo of a man/woman/person'",
                         placeholder="A photo of a [man/woman/person]...",
-                        value="A photo of a man, professional photoshoot, plain black shirt, on plain black background, shaved head, trimmed beard, wrinkles on forehead, intense, stoic, dramatic lighting")
+                        value="A photo of a man, looking directly at camera, professional photoshoot, plain black shirt, on plain black background, shaved head, trimmed beard, stoic, dynamic lighting")
             negative_prompt = gr.Textbox(label="Negative Prompt", placeholder="low quality", value="low quality, worst quality")
             style = "Photorealistic"
             submit = gr.Button("Submit")
