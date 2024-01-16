@@ -90,7 +90,7 @@ with gr.Blocks(css=css) as demo:
                         label="Drag 1 or more photos of your face",
                         file_types=["image"]
                     )
-            uploaded_files = gr.Gallery(label="Your images", visible=False, columns=5, rows=1, height=125)
+            uploaded_files = gr.Gallery(label="Your images", visible=False, columns=5, rows=1, height=250)
             with gr.Column(visible=False) as clear_button:
                 remove_and_reupload = gr.ClearButton(value="Remove and upload new ones", components=files, size="sm")
             prompt = gr.Textbox(label="Prompt",
@@ -99,10 +99,9 @@ with gr.Blocks(css=css) as demo:
                         value="A photo of a man, looking directly at camera, professional photoshoot, plain black shirt, on plain black background, shaved head, trimmed beard, stoic, dynamic lighting")
             negative_prompt = gr.Textbox(label="Negative Prompt", placeholder="low quality", value="low quality, worst quality")
             style = "Photorealistic"
-            submit = gr.Button("Submit")
-            with gr.Column(visible=True):
-                face_strength = gr.Slider(label="Guidance Scale", info="Dunno what this actually is", value=7.5, step=0.1, minimum=1, maximum=10)
-                likeness_strength = gr.Slider(label="Scale", info="Dunno what this actually is, either", value=1.0, step=0.1, minimum=0, maximum=5)
+            face_strength = gr.Slider(label="Guidance Scale", info="Dunno what this actually is", value=7.5, step=0.1, minimum=1, maximum=10)
+            likeness_strength = gr.Slider(label="Scale", info="Dunno what this actually is, either", value=1.0, step=0.1, minimum=0, maximum=5)
+            submit = gr.Button("Submit", variant="primary")
         with gr.Column():
             gallery = gr.Gallery(label="Generated Images")
         files.upload(fn=swap_to_gallery, inputs=files, outputs=[uploaded_files, clear_button, files])
