@@ -41,6 +41,11 @@ ip_model = ipown.IPAdapterFaceIDXL(pipe, ip_ckpt, device)
 
 @spaces.GPU(enable_queue=True)
 def generate_image(images, prompt, negative_prompt, face_strength, likeness_strength, progress=gr.Progress(track_tqdm=True)):
+    
+    # Clear GPU memory
+    torch.cuda.empty_cache()
+    
+    # Start the process
     pipe.to(device)
     app = FaceAnalysis(name="buffalo_l", providers=['CUDAExecutionProvider', 'CPUExecutionProvider'])
     app.prepare(ctx_id=0, det_size=(640, 640))
