@@ -46,7 +46,6 @@ def generate_image(images, prompt, negative_prompt, face_strength, likeness_stre
     app.prepare(ctx_id=0, det_size=(640, 640))
     
     faceid_all_embeds = []
-    first_iteration = True
     for image in images:
         face = cv2.imread(image)
         faces = app.get(face)
@@ -87,8 +86,9 @@ with gr.Blocks(css=css) as demo:
             with gr.Column(visible=False) as clear_button:
                 remove_and_reupload = gr.ClearButton(value="Remove and upload new ones", components=files, size="sm")
             prompt = gr.Textbox(label="Prompt",
-                       info="Try something like 'a photo of a man/woman/person'",
-                       placeholder="A photo of a [man/woman/person]...")
+                        info="Try something like 'a photo of a man/woman/person'",
+                        placeholder="A photo of a [man/woman/person]...",
+                        value="A photo of a man, professional photoshoot, plain black shirt, on plain black background, shaved head, trimmed beard, wrinkles on forehead, intense, stoic, dramatic lighting")
             negative_prompt = gr.Textbox(label="Negative Prompt", placeholder="low quality", value="low quality, worst quality")
             style = "Photorealistic"
             submit = gr.Button("Submit")
