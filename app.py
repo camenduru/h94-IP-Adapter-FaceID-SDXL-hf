@@ -97,7 +97,7 @@ with gr.Blocks(css=css) as demo:
             negative_prompt = gr.Textbox(label="Negative Prompt", placeholder="low quality", value="low quality, worst quality")
             style = "Photorealistic"
             submit = gr.Button("Submit")
-            with gr.Column(open=True):
+            with gr.Column(visible=True):
                 face_strength = gr.Slider(label="Guidance Scale", info="Dunno what this actually is", value=7.5, step=0.1, minimum=1, maximum=10)
                 likeness_strength = gr.Slider(label="Scale", info="Dunno what this actually is, either", value=1.0, step=0.1, minimum=0, maximum=5)
         with gr.Column():
