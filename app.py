@@ -7,7 +7,8 @@ from insightface.app import FaceAnalysis
 import gradio as gr
 import cv2
 
-base_model_path = "SG161222/RealVisXL_V3.0"
+#base_model_path = "SG161222/RealVisXL_V3.0"
+base_model_path = "cagliostrolab/animagine-xl-3.0"
 ip_ckpt = hf_hub_download(repo_id="h94/IP-Adapter-FaceID", filename="ip-adapter-faceid_sdxl.bin", repo_type="model")
 device = "cuda"
 
