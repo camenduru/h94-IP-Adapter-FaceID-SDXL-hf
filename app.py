@@ -28,7 +28,9 @@ pipe = StableDiffusionXLPipeline.from_pretrained(
     base_model_path,
     torch_dtype=torch.float16,
     scheduler=noise_scheduler,
-    add_watermarker=False
+    add_watermarker=False,
+    use_safetensors=True,
+    variant="fp16"
     # vae=vae,
     #feature_extractor=safety_feature_extractor,
     #safety_checker=safety_checker
