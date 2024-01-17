@@ -64,7 +64,7 @@ def generate_image(images, prompt, negative_prompt, face_strength, likeness_stre
     print("Generating SDXL")
     image = ip_model.generate(
         prompt=prompt, negative_prompt=total_negative_prompt, faceid_embeds=average_embedding,
-        scale=likeness_strength, width=1024, height=1024, guidance_scale=face_strength, num_inference_steps=30
+        scale=likeness_strength, width=864, height=1152, guidance_scale=face_strength, num_inference_steps=30
     )
 
     print(image)
@@ -80,7 +80,7 @@ h1{margin-bottom: 0 !important}
 '''
 with gr.Blocks(css=css) as demo:
     gr.Markdown("# IP-Adapter-FaceID SDXL demo")
-    gr.Markdown("A simple Demo for the [h94/IP-Adapter-FaceID SDXL model](https://huggingface.co/h94/IP-Adapter-FaceID). I have no idea what I am doing, but you should run this on at least 24 GB of VRAM.")
+    gr.Markdown("A simple Demo for the [h94/IP-Adapter-FaceID SDXL model](https://huggingface.co/h94/IP-Adapter-FaceID) in cojunction with [Juggernaut XL v6](https://huggingface.co/stablediffusionapi/juggernaut-xl-v7) as the base model I have no idea what I am doing, but you should run this on at least 24 GB of VRAM.")
     with gr.Row():
         with gr.Column():
             files = gr.Files(
