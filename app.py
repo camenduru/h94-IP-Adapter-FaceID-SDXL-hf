@@ -80,7 +80,7 @@ h1{margin-bottom: 0 !important}
 '''
 with gr.Blocks(css=css) as demo:
     gr.Markdown("# IP-Adapter-FaceID SDXL demo")
-    gr.Markdown("A simple Demo for the [h94/IP-Adapter-FaceID SDXL model](https://huggingface.co/h94/IP-Adapter-FaceID) in cojunction with [Juggernaut XL v6](https://huggingface.co/stablediffusionapi/juggernaut-xl-v7) as the base model I have no idea what I am doing, but you should run this on at least 24 GB of VRAM.")
+    gr.Markdown("A simple Demo for the [h94/IP-Adapter-FaceID SDXL model](https://huggingface.co/h94/IP-Adapter-FaceID) together with [Juggernaut XL v7](https://huggingface.co/stablediffusionapi/juggernaut-xl-v7). You should run this on at least 24 GB of VRAM.")
     with gr.Row():
         with gr.Column():
             files = gr.Files(
@@ -96,8 +96,8 @@ with gr.Blocks(css=css) as demo:
                         value="")
             negative_prompt = gr.Textbox(label="Negative Prompt", info="What the model should NOT produce.",placeholder="low quality", value="(worst quality, low quality, illustration, 3d, 2d, painting, cartoons, sketch), open mouth")
             style = "Photorealistic"
-            face_strength = gr.Slider(label="Guidance Scale", info="How much importance is given to the prompt when generating images.", value=7.5, step=0.1, minimum=0, maximum=15)
-            likeness_strength = gr.Slider(label="Scale", info="How much importance is given to your uploaded files when generating images.", value=1.0, step=0.1, minimum=0, maximum=5)
+            face_strength = gr.Slider(label="Prompt Strength", info="How much the written prompt weighs into the generated images.", value=7.5, step=0.1, minimum=0, maximum=15)
+            likeness_strength = gr.Slider(label="Photo Embedding Strength", info="How much your uploaded files weigh into the generated images.", value=1.0, step=0.1, minimum=0, maximum=5)
             submit = gr.Button("Submit", variant="primary")
         with gr.Column():
             gallery = gr.Gallery(label="Generated Images")
