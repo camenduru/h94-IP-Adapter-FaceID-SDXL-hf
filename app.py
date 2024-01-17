@@ -74,7 +74,7 @@ h1{margin-bottom: 0 !important}
 '''
 with gr.Blocks(css=css) as demo:
     gr.Markdown("# IP-Adapter-FaceID SDXL demo")
-    gr.Markdown("My own Demo for the [h94/IP-Adapter-FaceID SDXL model](https://huggingface.co/h94/IP-Adapter-FaceID). I have no idea what I am doing, but you should run this on at least 24 GB of VRAM.")
+    gr.Markdown("A simple Demo for the [h94/IP-Adapter-FaceID SDXL model](https://huggingface.co/h94/IP-Adapter-FaceID). I have no idea what I am doing, but you should run this on at least 24 GB of VRAM.")
     with gr.Row():
         with gr.Column():
             files = gr.Files(
