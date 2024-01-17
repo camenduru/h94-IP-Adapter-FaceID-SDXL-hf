@@ -1,12 +1,9 @@
 import torch
 import spaces
-from diffusers import StableDiffusionPipeline, DDIMScheduler, AutoencoderKL, StableDiffusionXLPipeline
-from transformers import AutoFeatureExtractor
-from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
+from diffusers import DDIMScheduler, StableDiffusionXLPipeline
 import ipown
 from huggingface_hub import hf_hub_download
 from insightface.app import FaceAnalysis
-from insightface.utils import face_align
 import gradio as gr
 import cv2
 
@@ -77,7 +74,7 @@ h1{margin-bottom: 0 !important}
 '''
 with gr.Blocks(css=css) as demo:
     gr.Markdown("# IP-Adapter-FaceID SDXL demo")
-    gr.Markdown("My own Demo for the [h94/IP-Adapter-FaceID SDXL model](https://huggingface.co/h94/IP-Adapter-FaceID). I have no idea what I am doing, but you should run this on at least 24 GB of VRAM")
+    gr.Markdown("My own Demo for the [h94/IP-Adapter-FaceID SDXL model](https://huggingface.co/h94/IP-Adapter-FaceID). I have no idea what I am doing, but you should run this on at least 24 GB of VRAM.")
     with gr.Row():
         with gr.Column():
             files = gr.Files(
