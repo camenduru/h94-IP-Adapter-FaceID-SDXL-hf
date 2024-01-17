@@ -89,9 +89,9 @@ with gr.Blocks(css=css) as demo:
                 remove_and_reupload = gr.ClearButton(value="Remove files and upload new ones", components=files, size="sm")
             prompt = gr.Textbox(label="Prompt",
                         info="Try something like 'a photo of a man/woman/person'",
-                        placeholder="A photo of a [man/woman/person]...",
-                        value="A photo of a man, looking directly at camera, professional photoshoot, plain black shirt, on plain black background, shaved head, trimmed beard, stoic, dynamic lighting")
-            negative_prompt = gr.Textbox(label="Negative Prompt", placeholder="low quality", value="low quality, worst quality")
+                        placeholder="A photo of a man/woman/person ...",
+                        value="")
+            negative_prompt = gr.Textbox(label="Negative Prompt", placeholder="low quality", value="low quality")
             style = "Photorealistic"
             face_strength = gr.Slider(label="Guidance Scale", info="How much importance is given to the prompt when generating images.", value=7.5, step=0.1, minimum=0, maximum=15)
             likeness_strength = gr.Slider(label="Scale", info="How much importance is given to your uploaded files when generating images.", value=1.0, step=0.1, minimum=0, maximum=5)
