@@ -34,9 +34,6 @@ pipe = StableDiffusionXLPipeline.from_pretrained(
     #safety_checker=safety_checker
 )
 
-#pipe.load_lora_weights("h94/IP-Adapter-FaceID", weight_name="ip-adapter-faceid-plusv2_sd15_lora.safetensors")
-#pipe.fuse_lora()
-
 ip_model = ipown.IPAdapterFaceIDXL(pipe, ip_ckpt, device)
 
 @spaces.GPU(enable_queue=True)
@@ -67,9 +64,6 @@ def generate_image(images, prompt, negative_prompt, face_strength, likeness_stre
         scale=likeness_strength, width=1024, height=1024, guidance_scale=face_strength, num_inference_steps=30
     )
 
-    # Clear GPU memory
-    torch.cuda.empty_cache()
-
     print(image)
     return image
 
@@ -92,15 +86,15 @@ with gr.Blocks(css=css) as demo:
                     )
             uploaded_files = gr.Gallery(label="Your images", visible=False, columns=5, rows=1, height=250)
             with gr.Column(visible=False) as clear_button:
-                remove_and_reupload = gr.ClearButton(value="Remove and upload new ones", components=files, size="sm")
+                remove_and_reupload = gr.ClearButton(value="Remove files and upload new ones", components=files, size="sm")
             prompt = gr.Textbox(label="Prompt",
                         info="Try something like 'a photo of a man/woman/person'",
                         placeholder="A photo of a [man/woman/person]...",
                         value="A photo of a man, looking directly at camera, professional photoshoot, plain black shirt, on plain black background, shaved head, trimmed beard, stoic, dynamic lighting")
             negative_prompt = gr.Textbox(label="Negative Prompt", placeholder="low quality", value="low quality, worst quality")
             style = "Photorealistic"
-            face_strength = gr.Slider(label="Guidance Scale", info="Dunno what this actually is", value=7.5, step=0.1, minimum=1, maximum=10)
-            likeness_strength = gr.Slider(label="Scale", info="Dunno what this actually is, either", value=1.0, step=0.1, minimum=0, maximum=5)
+            face_strength = gr.Slider(label="Guidance Scale", info="How much importance is given to the prompt when generating images.", value=7.5, step=0.1, minimum=0, maximum=15)
+            likeness_strength = gr.Slider(label="Scale", info="How much importance is given to your uploaded files when generating images.", value=1.0, step=0.1, minimum=0, maximum=5)
             submit = gr.Button("Submit", variant="primary")
         with gr.Column():
             gallery = gr.Gallery(label="Generated Images")
